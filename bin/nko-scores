@@ -1,0 +1,57 @@
+#! /usr/bin/env node
+
+var request = require('superagent');
+var async = require('async');
+var cheerio = require('cheerio');
+var fs = require('fs');
+var ProgressBar = require('progress');
+var _ = require('underscore');
+var Table = require('ascii-table');
+var program = require('commander');
+
+program
+  .option('-n, --number [20]', 'Number of high scores to show', 40, parseInt)
+  .parse(process.argv);
+
+// parse team names
+var teamUrls = JSON.parse(fs.readFileSync(__dirname + '/teams.json'));
+var teams = teamUrls.map(function (url) { return url.match(/[-\w]+$/)[0]; });
+
+// ASCII progress bar
+var bar = new ProgressBar('getting scores: :bar [:current/:total]', {
+  total: teams.length + 1,
+  width: 58
+});
+
+// set up queue worker
+var scores = [];
+var CONCURRENCY = 20;
+var scoreQueue = async.queue(function (team, cb) {
+  request.get('http://nodeknockout.com/iframe/' + team)
+    .end(function (res) {
+      bar.tick();
+      var $ = cheerio.load(res.text);
+      var score = parseInt($('#count').text(), 10);
+      scores.push([team, score]);
+      cb();
+    });
+}, CONCURRENCY);
+
+// start progress bar
+bar.tick();
+teams.forEach(function (team) { scoreQueue.push(team); });
+scoreQueue.drain = function () {
+  var table = new Table('node knockout 2013 high scores');
+  table.setHeading('#', 'Team', 'URL');
+  _(scores)
+    .sortBy(function (teamScore) { return -teamScore[1]; })
+    .slice(0, program.number)
+    .forEach(function (teamScore) {
+      var team = teamScore[0];
+      var score = teamScore[1];
+      var url = 'http://' + team + '.2013.nodeknockout.com';
+      table.addRow(score, team, url);
+    });
+  console.log(table.toString());
+};
+

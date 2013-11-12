@@ -1,0 +1,22 @@
+{
+  "name": "nko-scores",
+  "version": "0.0.1",
+  "description": "",
+  "main": "./bin/nko-scores",
+  "directories": {
+    "bin": "./bin"
+  },
+  "scripts": {
+  },
+  "dependencies": {
+    "async": "x",
+    "superagent": "x",
+    "underscore": "x",
+    "progress": "x",
+    "ascii-table": "x",
+    "commander": "x",
+    "cheerio": "x"
+  },
+  "author": "",
+  "license": "BSD"
+}
