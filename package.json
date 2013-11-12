@@ -1,8 +1,12 @@
 {
   "name": "nko-scores",
   "version": "0.0.1",
-  "description": "",
+  "description": "Get NKO 2013 high scores",
   "main": "./bin/nko-scores",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/clifton/nko-scores.git"
+  },
   "directories": {
     "bin": "./bin"
   },
@@ -17,6 +21,6 @@
     "commander": "x",
     "cheerio": "x"
   },
-  "author": "",
+  "author": "Clifton King <cliftonk@gmail.com>",
   "license": "BSD"
 }
