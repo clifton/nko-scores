@@ -14,7 +14,7 @@ program
   .parse(process.argv);
 
 // parse team names
-var teamUrls = JSON.parse(fs.readFileSync(__dirname + '/teams.json'));
+var teamUrls = JSON.parse(fs.readFileSync(__dirname + '/../teams.json'));
 var teams = teamUrls.map(function (url) { return url.match(/[-\w]+$/)[0]; });
 
 // ASCII progress bar
