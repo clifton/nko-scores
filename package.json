@@ -1,6 +1,6 @@
 {
   "name": "nko-scores",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Get NKO 2013 high scores",
   "main": "./bin/nko-scores",
   "repository": {
